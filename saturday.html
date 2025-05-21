@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saturday Tasks</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Tasks for Monday</h1>
+  <ul id="task-list"></ul>
+  <input type="text" id="task-input" placeholder="Add a task..." />
+  <button onclick="addTask()">Add Task</button>
+  <br><br>
+  <a href="index.html">← Back to Home</a>
+
+  <script>
+    const storageKey = 'saturdayTasks';
+    const tasks = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+    function renderTasks() {
+      const list = document.getElementById('task-list');
+      list.innerHTML = '';
+      tasks.forEach((task, i) => {
+        const item = document.createElement('li');
+        item.textContent = task;
+        item.onclick = () => { tasks.splice(i, 1); save(); };
+        list.appendChild(item);
+      });
+    }
+
+    function addTask() {
+      const input = document.getElementById('task-input');
+      if (input.value.trim()) {
+        tasks.push(input.value.trim());
+        input.value = '';
+        save();
+      }
+    }
+
+    function save() {
+      localStorage.setItem(storageKey, JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    renderTasks();
+  </script>
+</body>
+</html>
